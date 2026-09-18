@@ -51,10 +51,10 @@ export default function Tournaments() {
   }, [filter]);
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Competitive Tournaments">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-label="Competitive Tournaments">
       {/* Header */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-12 sm:pt-20 sm:pb-16 px-5 sm:px-6">
-        <div className="max-w-7xl mx-auto tournaments-header-anim">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+        <div className="container tournaments-header-anim">
           <SectionHeading
             eyebrow="Tournaments"
             title="Compete. Win. Repeat."
@@ -63,28 +63,34 @@ export default function Tournaments() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="container pt-12 sm:pt-16">
         {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-8 sm:mb-10" role="group" aria-label="Filter tournaments by status">
-          {(['all', 'upcoming', 'completed'] as Filter[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              aria-pressed={filter === f}
-              className={`font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded transition-all min-h-[40px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
-                filter === f
-                  ? 'bg-lime text-bg shadow-sm'
-                  : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25'
-              }`}
-            >
-              {f}
-            </button>
-          ))}
+        <div className="flex flex-wrap gap-3 mb-12 sm:mb-14" role="group" aria-label="Filter tournaments by status">
+          {(['all', 'upcoming', 'completed'] as Filter[]).map((f) => {
+            const count = f === 'all' ? tournaments.length : tournaments.filter((t) => t.status === f).length;
+            return (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                aria-pressed={filter === f}
+                className={`inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded-full transition-all min-h-[40px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                  filter === f
+                    ? 'bg-lime text-bg font-bold shadow-[0_0_16px_rgba(183,255,60,0.3)]'
+                    : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25 hover:bg-white/5'
+                }`}
+              >
+                <span>{f}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${filter === f ? 'bg-bg/20 text-bg' : 'bg-white/10 text-muted'}`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Tournament cards */}
         {filtered.length === 0 ? (
-          <div className="text-center py-20 px-4 border border-white/8 rounded bg-surface/30" role="status">
+          <div className="text-center py-20 px-4 border border-white/8 rounded-lg bg-surface/30" role="status">
             <svg
               className="w-12 h-12 text-muted mx-auto mb-4 opacity-40"
               fill="none"
@@ -100,7 +106,7 @@ export default function Tournaments() {
             </p>
           </div>
         ) : (
-          <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 sm:mb-20">
+          <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-20 sm:mb-24">
             {filtered.map((t) => {
               const slotsLeft = t.maxTeams - t.registeredTeams;
               const pct = (t.registeredTeams / t.maxTeams) * 100;
@@ -108,7 +114,7 @@ export default function Tournaments() {
               return (
                 <article
                   key={t.id}
-                  className="bg-surface border border-white/8 rounded overflow-hidden group hover:border-white/20 transition-all flex flex-col justify-between"
+                  className="bg-surface border border-white/8 rounded-xl overflow-hidden group hover:border-white/20 card-glow hover-lift transition-all duration-300 flex flex-col"
                 >
                   <div>
                     <div className="relative h-48 sm:h-52 overflow-hidden bg-bg2">
@@ -140,7 +146,7 @@ export default function Tournaments() {
                       </div>
                     </div>
 
-                    <div className="p-6 sm:p-7">
+                    <div className="p-7 sm:p-8">
                       <h3 className="font-display font-bold text-xl sm:text-2xl text-text mb-2">
                         {t.name}
                       </h3>
@@ -148,26 +154,26 @@ export default function Tournaments() {
                         {t.description}
                       </p>
 
-                      <div className="grid grid-cols-3 gap-4 mb-5 py-4 border-y border-white/8">
+                      <div className="grid grid-cols-3 gap-5 mb-7 py-5 border-y border-white/8">
                         <div>
-                          <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
+                          <div className="font-display text-[9px] font-semibold uppercase tracking-widest text-muted mb-1.5">
                             Date
                           </div>
-                          <div className="text-sm text-text font-medium mt-0.5">
+                          <div className="text-sm text-text font-semibold">
                             {new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                           </div>
                         </div>
                         <div>
-                          <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
+                          <div className="font-display text-[9px] font-semibold uppercase tracking-widest text-muted mb-1.5">
                             Time
                           </div>
-                          <div className="text-sm text-text font-medium mt-0.5">{t.time}</div>
+                          <div className="text-sm text-text font-semibold">{t.time}</div>
                         </div>
                         <div>
-                          <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
+                          <div className="font-display text-[9px] font-semibold uppercase tracking-widest text-muted mb-1.5">
                             Entry
                           </div>
-                          <div className="text-sm text-text font-medium mt-0.5">₹{t.entryFee}</div>
+                          <div className="text-sm text-text font-semibold">₹{t.entryFee}</div>
                         </div>
                       </div>
 
@@ -208,17 +214,17 @@ export default function Tournaments() {
                     </div>
                   </div>
 
-                  <div className="p-6 sm:p-7 pt-0 flex gap-3">
+                  <div className="p-7 sm:p-8 pt-0 flex gap-3">
                     <Link
                       to={`/tournaments/${t.id}`}
-                      className="flex-1 flex items-center justify-center border border-white/20 text-text font-display font-semibold text-xs uppercase tracking-widest py-3 px-4 rounded hover:border-white/40 hover:bg-white/5 transition-all active:scale-[0.97] min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 cursor-pointer"
+                      className="flex-1 flex items-center justify-center border border-white/15 text-text font-display font-semibold text-xs uppercase tracking-widest py-3.5 px-4 rounded-lg hover:border-white/35 hover:bg-white/5 transition-all active:scale-[0.97] min-h-[46px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 cursor-pointer"
                     >
                       View Details
                     </Link>
                     {t.registrationStatus === 'open' && !isFull && (
                       <Link
                         to={`/tournaments/${t.id}#register`}
-                        className="flex-1 flex items-center justify-center bg-lime text-bg font-display font-bold text-xs uppercase tracking-widest py-3 px-4 rounded hover:bg-lime-dim transition-all active:scale-[0.97] min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 cursor-pointer"
+                        className="flex-1 flex items-center justify-center bg-lime text-bg font-display font-bold text-xs uppercase tracking-widest py-3.5 px-4 rounded-lg hover:bg-lime-dim transition-all active:scale-[0.97] min-h-[46px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 cursor-pointer shadow-[0_0_20px_rgba(183,255,60,0.25)]"
                       >
                         Register Now
                       </Link>
@@ -231,21 +237,23 @@ export default function Tournaments() {
         )}
 
         {/* Past Winners */}
-        <section className="border-t border-white/8 pt-14 sm:pt-16" aria-labelledby="winners-heading">
+        <section className="border-t border-white/8 pt-20 sm:pt-24" aria-labelledby="winners-heading">
           <SectionHeading
             eyebrow="Champions Archive"
             title="Past Winners"
             description="The legends who competed and took the championship at Nexus."
           />
-          <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mt-10 sm:mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {winners.map((w) => (
               <article
                 key={w.id}
-                className="bg-surface border border-gold/20 rounded p-5 sm:p-6 hover:border-gold/40 transition-colors"
+                className="bg-surface border border-gold/15 rounded-xl p-6 sm:p-7 hover:border-gold/40 hover-lift transition-all duration-250 relative overflow-hidden"
               >
+                <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-gold/5 rounded-full blur-xl pointer-events-none" />
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-display text-[11px] font-semibold uppercase tracking-widest text-gold">
-                    {w.position === 1 ? '🥇 1st Place' : w.position === 2 ? '🥈 2nd Place' : '🥉 3rd Place'}
+                  <span className="font-display text-[11px] font-semibold uppercase tracking-widest text-gold flex items-center gap-1.5">
+                    <span>{w.position === 1 ? '🥇' : w.position === 2 ? '🥈' : '🥉'}</span>
+                    <span>{w.position === 1 ? '1st Place' : w.position === 2 ? '2nd Place' : '3rd Place'}</span>
                   </span>
                   <span className="font-display font-bold text-sm text-gold">
                     ₹{w.prize.toLocaleString('en-IN')}

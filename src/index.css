@@ -32,7 +32,7 @@
   --color-maintenance: #6B7280;
 
   /* Layout */
-  --navbar-h: 64px;
+  --navbar-h: 72px;
 }
 
 /* ── Reset ────────────────────────────────────────────────────────────────── */
@@ -45,7 +45,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* Ensures hash-links don't hide behind fixed navbar */
   scroll-padding-top: var(--navbar-h);
 }
 
@@ -55,57 +54,42 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 h1, h2, h3, h4, h5 {
   font-family: 'Space Grotesk', sans-serif;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.15;
 }
 
 /* ── Scrollbar ────────────────────────────────────────────────────────────── */
 
-::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #1E2428; border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: #1E2428; border-radius: 3px; }
 
 /* ── Global Layout ────────────────────────────────────────────────────────── */
 
-/**
- * page-shell: Applied once in PublicLayout (App.tsx).
- * Every public page sits below the fixed navbar automatically.
- * Individual pages must NOT add their own top-padding.
- */
 .page-shell {
   padding-top: var(--navbar-h);
 }
 
-/* Extra breathing room below the navbar on every public page */
-.page-shell > * {
-  /* Pages handle their own internal top padding via page headers.
-     This ensures the first element has visible separation from the nav. */
-}
-
 /* ── Content Container ───────────────────────────────────────────────────── */
 
-/**
- * .container: one reusable centred content container.
- * Nothing should stretch edge-to-edge on wide screens.
- */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1320px;
   margin-inline: auto;
-  padding-inline: 20px;
+  padding-inline: 24px;
 }
 
 @media (min-width: 640px) {
-  .container { padding-inline: 24px; }
+  .container { padding-inline: 32px; }
 }
 
 @media (min-width: 1024px) {
-  .container { padding-inline: 40px; }
+  .container { padding-inline: 48px; }
 }
 
 /* ── Sticky elements respect the navbar ──────────────────────────────────── */
@@ -120,17 +104,140 @@ h1, h2, h3, h4, h5 {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  scrollbar-width: none;        /* Firefox */
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 2px;          /* prevent clip on focus rings */
+  padding-bottom: 2px;
 }
 
-.scroll-rail::-webkit-scrollbar {
-  display: none;
+.scroll-rail::-webkit-scrollbar { display: none; }
+.scroll-rail > * { flex-shrink: 0; }
+
+/* ── Premium Glow Card ───────────────────────────────────────────────────── */
+
+.card-glow {
+  position: relative;
+  isolation: isolate;
+}
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(183,255,60,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.card-glow:hover::before {
+  opacity: 1;
 }
 
-.scroll-rail > * {
-  flex-shrink: 0;
+/* ── Lime Gradient Accent Line ───────────────────────────────────────────── */
+
+.gradient-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(183,255,60,0.5) 40%, rgba(57,231,255,0.3) 70%, transparent);
+}
+
+.gradient-line-subtle {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 50%, transparent);
+}
+
+/* ── Noise Overlay (premium texture) ─────────────────────────────────────── */
+
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ── Glass Card ──────────────────────────────────────────────────────────── */
+
+.glass {
+  background: rgba(23, 28, 32, 0.7);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Animated Status Pulse ───────────────────────────────────────────────── */
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+.pulse-ring {
+  animation: pulse-ring 2s infinite;
+}
+
+/* ── Lime Text Glow ──────────────────────────────────────────────────────── */
+
+.text-glow-lime {
+  text-shadow: 0 0 20px rgba(183,255,60,0.35), 0 0 60px rgba(183,255,60,0.12);
+}
+
+/* ── Number Stat Glow ────────────────────────────────────────────────────── */
+
+.stat-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: #B7FF3C;
+  text-shadow: 0 0 24px rgba(183,255,60,0.3);
+  letter-spacing: -0.03em;
+}
+
+/* ── Section Divider ─────────────────────────────────────────────────────── */
+
+.section-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, #B7FF3C, #39E7FF 80%, transparent);
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+}
+
+/* ── CTA Button Shimmer ──────────────────────────────────────────────────── */
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+
+.btn-shimmer {
+  background-size: 200% auto;
+  background-image: linear-gradient(110deg, #B7FF3C 0%, #96D424 30%, #B7FF3C 60%, #DBFF8A 80%, #B7FF3C 100%);
+  animation: shimmer 3s linear infinite;
+  color: #0B0D0F;
+}
+
+/* ── Hover Lift ──────────────────────────────────────────────────────────── */
+
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+/* ── Focus Ring ──────────────────────────────────────────────────────────── */
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid rgba(183,255,60,0.5);
+  outline-offset: 2px;
 }
 
 /* ── Reduced Motion ───────────────────────────────────────────────────────── */

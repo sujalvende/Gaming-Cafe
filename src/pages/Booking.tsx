@@ -111,24 +111,27 @@ export default function Booking() {
   // ── Confirmed state ───────────────────────────────────────────────────────
   if (confirmed) {
     return (
-      <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Booking confirmation">
-        <div className="max-w-lg mx-auto px-5 sm:px-6 py-12 sm:py-16 text-center booking-step-content">
+      <div ref={rootRef} className="min-h-[85vh] flex items-center justify-center py-12 px-5 sm:px-6" aria-label="Booking confirmation">
+        <div className="w-full max-w-lg mx-auto text-center booking-step-content">
           <div
-            className="w-20 h-20 rounded-full bg-available/10 border border-available/20 flex items-center justify-center mx-auto mb-6 shadow-sm"
+            className="w-20 h-20 rounded-full bg-available/15 border border-available/30 flex items-center justify-center mx-auto mb-6 shadow-[0_0_24px_rgba(34,197,94,0.3)] animate-pulse"
             role="status"
             aria-label="Booking confirmed"
           >
             <svg className="w-10 h-10 text-available" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="font-display font-bold text-3xl text-text mb-2">Booking Confirmed!</h1>
-          <div className="font-display text-xs font-semibold uppercase tracking-widest text-lime mb-8">
-            Booking ID: {bookingId}
+          <h1 className="font-display font-bold text-3xl sm:text-4xl text-text mb-2 tracking-tight">Booking Confirmed!</h1>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lime/10 border border-lime/25 font-display text-xs font-semibold uppercase tracking-widest text-lime mb-8 shadow-xs">
+            <span>Booking ID:</span>
+            <span className="font-bold">{bookingId}</span>
           </div>
-          <div className="bg-surface border border-white/8 rounded p-6 text-left mb-8 shadow-xs">
-            <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-4">
-              Summary
+          <div className="bg-surface/80 backdrop-blur-md border border-white/12 rounded-xl p-6 sm:p-7 text-left mb-8 shadow-xl card-glow relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-lime via-cyan to-purple" />
+            <div className="flex items-center justify-between font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-4 pb-2 border-b border-white/8">
+              <span>Session Pass</span>
+              <span className="text-lime">Valid Today</span>
             </div>
             {[
               ['Zone', zoneData?.name],
@@ -136,22 +139,22 @@ export default function Booking() {
               ['Time', selectedTime],
               ['Duration', selectedDuration],
               ['Name', name],
-              ['Total', `₹${price}`],
+              ['Total Amount', `₹${price}`],
             ].map(([label, value]) => (
-              <div key={label} className="flex justify-between py-2.5 border-b border-white/6 last:border-0">
+              <div key={label} className="flex justify-between py-2.5 border-b border-white/6 last:border-0 items-center">
                 <span className="text-muted text-sm">{label}</span>
-                <span className={`text-sm font-medium ${label === 'Total' ? 'text-lime font-bold text-base' : 'text-text'}`}>
+                <span className={`text-sm font-medium ${label === 'Total Amount' ? 'text-lime font-bold text-lg' : 'text-text'}`}>
                   {value}
                 </span>
               </div>
             ))}
           </div>
-          <p className="text-muted text-sm leading-relaxed mb-8">
-            Please arrive 10 minutes before your session. Payment is due at the counter.
+          <p className="text-muted text-sm leading-relaxed mb-8 max-w-[42ch] mx-auto">
+            Please arrive 10 minutes before your session start time. Peripherals and station sanitization included.
           </p>
-          <div className="flex gap-4 justify-center">
-            <Button to="/" variant="outline">Home</Button>
-            <Button to="/availability">Check Availability</Button>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button to="/" variant="outline" size="md">Return to Home</Button>
+            <Button to="/availability" size="md">Check Arena Status</Button>
           </div>
         </div>
       </div>
@@ -159,9 +162,9 @@ export default function Booking() {
   }
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Book a gaming session">
+    <div ref={rootRef} className="pb-32 min-h-screen" aria-label="Book a gaming session">
       {/* Header + stepper */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-10 sm:pt-20 sm:pb-14 px-5 sm:px-6">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-12 sm:pt-24 sm:pb-16 px-6 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="font-display text-[11px] font-semibold uppercase tracking-widest text-lime mb-2">
             Reservation
@@ -212,7 +215,7 @@ export default function Booking() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 mt-10 sm:mt-14">
         <div className="booking-step-content">
           {/* Step 1: Zone */}
           {step === 1 && (
@@ -220,7 +223,8 @@ export default function Booking() {
               <h2 id="step1-heading" className="font-display font-bold text-2xl text-text mb-6">
                 Choose a Zone
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <p className="text-muted text-sm mb-8 -mt-2">Select the arena that fits your session.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {zones.map((z) => {
                   const avail = z.stations.filter((s) => s.status === 'available').length;
                   const isSelected = selectedZone === z.id;
@@ -228,8 +232,8 @@ export default function Booking() {
                     <button
                       key={z.id}
                       onClick={() => setSelectedZone(z.id as ZoneId)}
-                      className={`text-left border rounded overflow-hidden transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
-                        isSelected ? 'border-lime bg-lime/5 shadow-sm' : 'border-white/10 bg-surface hover:border-white/25'
+                      className={`text-left border rounded-xl overflow-hidden transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                        isSelected ? 'border-lime bg-lime/5 shadow-[0_0_20px_rgba(183,255,60,0.15)]' : 'border-white/10 bg-surface hover:border-white/25'
                       }`}
                       aria-pressed={isSelected}
                       aria-label={`Select ${z.name} — ₹${z.pricePerHour}/hr`}
@@ -270,14 +274,14 @@ export default function Booking() {
               <h2 id="step2-heading" className="font-display font-bold text-2xl text-text mb-6">
                 Choose a Date
               </h2>
-              <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 sm:gap-3">
+              <div className="grid grid-cols-4 sm:grid-cols-7 gap-2.5 sm:gap-3">
                 {dates.map((date, i) => {
                   const isSelected = selectedDate?.toDateString() === date.toDateString();
                   return (
                     <button
                       key={i}
                       onClick={() => setSelectedDate(date)}
-                      className={`flex flex-col items-center gap-1 py-4 border rounded transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                      className={`flex flex-col items-center gap-1.5 py-5 border rounded-xl transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                         isSelected
                           ? 'border-lime bg-lime/10 text-lime shadow-xs'
                           : 'border-white/10 bg-surface text-muted hover:border-white/25 hover:text-text'
@@ -306,12 +310,12 @@ export default function Booking() {
               <h2 id="step3-heading" className="font-display font-bold text-2xl text-text mb-6">
                 Choose a Start Time
               </h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 sm:gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-4">
                 {timeSlots.map((t) => (
                   <button
                     key={t}
                     onClick={() => setSelectedTime(t)}
-                    className={`py-3 sm:py-3.5 border rounded font-display font-semibold text-xs sm:text-sm uppercase tracking-wide transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                    className={`py-4 border rounded-xl font-display font-semibold text-xs sm:text-sm uppercase tracking-wide transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                       selectedTime === t
                         ? 'border-lime bg-lime/10 text-lime shadow-xs'
                         : 'border-white/10 bg-surface text-muted hover:border-white/25 hover:text-text'
@@ -339,7 +343,7 @@ export default function Booking() {
                     <button
                       key={d}
                       onClick={() => setSelectedDuration(d)}
-                      className={`flex items-center justify-between p-4 sm:p-5 border rounded transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                      className={`flex items-center justify-between p-5 sm:p-6 border rounded-xl transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                         isSelected ? 'border-lime bg-lime/10 shadow-xs' : 'border-white/10 bg-surface hover:border-white/25'
                       }`}
                       aria-pressed={isSelected}
@@ -453,7 +457,7 @@ export default function Booking() {
           )}
 
           {/* Navigation */}
-          <div className="flex gap-4 mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-white/8">
+          <div className="flex gap-4 mt-10 sm:mt-12 pt-7 sm:pt-9 border-t border-white/8">
             {step > 1 && (
               <Button onClick={() => setStep((s) => (s - 1) as Step)} variant="outline" size="md">
                 ← Back

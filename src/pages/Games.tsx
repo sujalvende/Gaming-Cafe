@@ -57,21 +57,21 @@ export default function Games() {
   }, [activeGenre, search === '']);
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Game library">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-label="Game library">
       {/* Header */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-12 sm:pt-20 sm:pb-16 px-5 sm:px-6">
-        <div className="max-w-7xl mx-auto">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+        <div className="container">
           <div className="games-header-anim">
             <SectionHeading
               eyebrow="Game Library"
               title="80+ Games Available"
-              description="From tactical FPS to open-world epics. Browse the full library — PC and PS5."
+              description="From tactical FPS to open-world epics. High tickrate servers, local low-ping cache, and tournament-grade setups."
             />
           </div>
           {/* Search */}
-          <div className="mt-8 relative w-full max-w-md games-header-anim">
+          <div className="mt-8 sm:mt-10 relative w-full max-w-lg games-header-anim">
             <svg
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -85,65 +85,72 @@ export default function Games() {
               placeholder="Search by title or genre..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-surface border border-white/10 rounded pl-11 pr-4 py-3 text-sm text-text placeholder:text-muted/70 focus:outline-none focus:border-lime/60 focus:ring-1 focus:ring-lime/40 transition-colors w-full"
+              className="bg-surface/90 border border-white/12 rounded-full pl-12 pr-5 py-3.5 text-sm text-text placeholder:text-muted/60 focus:outline-none focus:border-lime/60 focus:ring-2 focus:ring-lime/25 transition-all shadow-sm w-full"
+              style={{ paddingLeft: '3rem', paddingRight: '1.25rem' }}
               aria-label="Search games"
             />
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="container pt-12 sm:pt-16">
         {/* Genre filter rail */}
-        <div className="overflow-x-auto no-scrollbar pb-2 mb-6" role="group" aria-label="Filter by genre">
-          <div className="flex gap-2 min-w-max">
-            {genres.map((g) => (
-              <button
-                key={g}
-                onClick={() => setActiveGenre(g)}
-                className={`font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 min-h-[40px] cursor-pointer ${
-                  activeGenre === g
-                    ? 'bg-lime text-bg shadow-sm'
-                    : 'bg-surface border border-white/10 text-muted hover:border-white/25 hover:text-text'
-                }`}
-                aria-pressed={activeGenre === g}
-              >
-                {g}
-              </button>
-            ))}
+        <div className="overflow-x-auto no-scrollbar mt-4 mb-4 pb-3" style={{ marginTop: '1rem', marginBottom: '1rem' }} role="group" aria-label="Filter by genre">
+          <div className="flex gap-2.5 min-w-max px-2">
+            {genres.map((g) => {
+              const count = g === 'ALL' ? games.length : games.filter((game) => game.genre === g).length;
+              return (
+                <button
+                  key={g}
+                  onClick={() => setActiveGenre(g)}
+                  className={`inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-widest px-5 py-2.5 rounded transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 min-h-[40px] cursor-pointer ${
+                    activeGenre === g
+                      ? 'bg-lime text-bg font-bold shadow-[0_0_16px_rgba(183,255,60,0.25)]'
+                      : 'bg-surface border border-white/10 text-muted hover:border-white/25 hover:text-text hover:bg-white/5'
+                  }`}
+                  aria-pressed={activeGenre === g}
+                >
+                  <span>{g}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${activeGenre === g ? 'bg-bg/20 text-bg' : 'bg-white/10 text-muted'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* Results count */}
         <div
-          className="text-muted text-xs font-display uppercase tracking-widest mb-6"
+          className="text-muted text-xs font-display uppercase tracking-widest mb-8"
           role="status"
           aria-live="polite"
           aria-atomic="true"
         >
-          {filtered.length} game{filtered.length !== 1 ? 's' : ''} found
+          {filtered.length} game{filtered.length !== 1 ? 's' : ''} available
         </div>
 
         {/* Game grid */}
         {filtered.length === 0 ? (
-          <div className="text-center py-24 border border-white/8 rounded bg-surface/50" role="status">
-            <div className="w-14 h-14 rounded-sm bg-surface2 flex items-center justify-center mx-auto mb-5">
-              <svg className="w-7 h-7 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <div className="text-center py-28 border border-white/8 rounded-2xl bg-surface/40" role="status">
+            <div className="w-16 h-16 rounded-full bg-surface2 flex items-center justify-center mx-auto mb-6">
+              <svg className="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <h3 className="font-display font-bold text-xl text-text mb-2">No Games Found</h3>
-            <p className="text-muted text-sm">Try adjusting your search query or selecting another genre filter.</p>
+            <h3 className="font-display font-bold text-2xl text-text mb-2">No Games Found</h3>
+            <p className="text-muted text-sm max-w-sm mx-auto">Try adjusting your search query or selecting another genre filter.</p>
           </div>
         ) : (
-          <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
             {filtered.map((game) => (
               <article
                 key={game.id}
-                className="group bg-surface border border-white/8 rounded overflow-hidden hover:border-white/25 transition-all duration-200 flex flex-col justify-between"
+                className="group bg-surface/90 border border-white/8 rounded-xl overflow-hidden hover:border-white/25 transition-all duration-300 flex flex-col justify-between card-glow hover-lift"
               >
                 {/* Image */}
                 <div>
-                  <div className="relative overflow-hidden aspect-[16/10]">
+                  <div className="relative overflow-hidden aspect-[16/10] bg-bg2">
                     <img
                       src={game.image}
                       alt={game.name}

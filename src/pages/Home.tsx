@@ -73,8 +73,7 @@ function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative flex items-end overflow-hidden"
-      style={{ minHeight: 'min(100svh, 800px)' }}
+      className="relative flex items-center min-h-[90vh] sm:min-h-[94vh] pt-32 pb-20 sm:pt-40 sm:pb-28 mb-12 sm:mb-16 lg:mb-20 overflow-hidden"
       aria-label="Hero"
     >
       {/* Background */}
@@ -88,37 +87,50 @@ function Hero() {
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg/85 via-bg/30 to-transparent" />
+        {/* Cinematic dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/70 to-bg/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg via-bg/60 to-transparent" />
+        {/* Subtle grid pattern for depth */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(183,255,60,0.3) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(183,255,60,0.3) 1px, transparent 1px)`,
+            backgroundSize: '80px 80px',
+          }}
+          aria-hidden="true"
+        />
+        {/* Bottom lime glow edge */}
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent 5%, rgba(183,255,60,0.4) 40%, rgba(57,231,255,0.2) 65%, transparent 95%)' }} aria-hidden="true" />
       </div>
 
       {/* Content */}
-      <div className="relative w-full container pb-20 sm:pb-28 lg:pb-36">
-        <div className="max-w-2xl">
+      <div className="relative w-full container">
+        <div className="max-w-2xl py-8">
           {/* Open now pill */}
-          <div ref={pillRef} className="inline-flex items-center gap-2 mb-8 bg-bg2/80 border border-white/10 rounded-full px-4 py-1.5 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-available animate-pulse flex-shrink-0" aria-hidden="true" />
+          <div ref={pillRef} className="inline-flex items-center gap-2.5 mb-8 sm:mb-10 bg-surface/80 border border-white/12 rounded-full px-4 py-2 backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-available animate-pulse flex-shrink-0 shadow-[0_0_8px_#22C55E]" aria-hidden="true" />
             <span className="font-display text-[11px] font-semibold uppercase tracking-[0.15em] text-available">Open Now</span>
-            <span className="text-muted text-[11px]">·</span>
-            <span className="text-muted text-[11px]">Closes 2:00 AM</span>
+            <span className="text-muted/60 text-[11px]">·</span>
+            <span className="text-muted text-[11px] font-medium">Closes 2:00 AM</span>
           </div>
 
           {/* Heading — split into lines for staggered GSAP reveal */}
           <h1
-            className="font-display font-bold text-text mb-7"
-            style={{ fontSize: 'clamp(52px, 7.5vw, 92px)', lineHeight: '0.95', letterSpacing: '-0.025em' }}
+            className="font-display font-bold text-text mb-8"
+            style={{ fontSize: 'clamp(52px, 7.5vw, 92px)', lineHeight: '0.96', letterSpacing: '-0.025em' }}
           >
             <span ref={line1Ref} className="block">PLAY.</span>
             <span ref={line2Ref} className="block">COMPETE.</span>
-            <span ref={line3Ref} className="block text-lime">REPEAT.</span>
+            <span ref={line3Ref} className="block text-lime text-glow-lime">REPEAT.</span>
           </h1>
 
-          <p ref={descRef} className="text-muted text-base sm:text-lg leading-relaxed mb-10 max-w-md">
-            Bengaluru's premium gaming lounge — RTX 4090 stations, OLED console screens, and a live tournament circuit.
+          <p ref={descRef} className="text-muted text-base sm:text-lg leading-relaxed mb-10 sm:mb-12 max-w-lg">
+            Bengaluru's premier gaming lounge — RTX 4090 stations, OLED console screens, and a live tournament circuit.
           </p>
 
-          <div ref={ctaRef} className="flex flex-wrap gap-3">
-            <Button to="/booking" size="lg">Book a Session</Button>
+          <div ref={ctaRef} className="flex flex-wrap gap-4 items-center">
+            <Button to="/booking" size="lg" className="shadow-[0_0_24px_rgba(183,255,60,0.25)]">Book a Session</Button>
             <Button to="/games" variant="outline" size="lg">Explore Games</Button>
           </div>
         </div>
@@ -149,22 +161,21 @@ function Marquee() {
   }, []);
 
   const items = ['PLAY', 'COMPETE', 'CONNECT', 'REPEAT', 'WIN', 'LEVEL UP'];
-  // Duplicate for seamless loop
   const doubled = [...items, ...items];
 
   return (
     <div
-      className="overflow-hidden border-y border-white/8 bg-bg2 py-4"
+      className="overflow-hidden border-y border-white/8 bg-bg2 py-5 mt-6 sm:mt-10 mb-6 sm:mb-10"
       aria-hidden="true"
     >
       <div ref={trackRef} className="flex gap-0 whitespace-nowrap will-change-transform">
         {doubled.map((item, i) => (
           <span
             key={i}
-            className="font-display font-bold text-[11px] uppercase tracking-[0.25em] text-muted/50 px-8"
+            className="font-display font-bold text-xs uppercase tracking-[0.25em] text-muted/50 px-10"
           >
             {item}
-            <span className="ml-8 text-lime/30">·</span>
+            <span className="ml-10 text-lime/40">·</span>
           </span>
         ))}
       </div>
@@ -179,27 +190,27 @@ function StatusBar() {
   const available = pcZone.stations.filter((s) => s.status === 'available').length;
 
   return (
-    <div className="bg-bg2 border-b border-white/8" role="complementary" aria-label="Quick info">
-      <div className="container py-4 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-6 sm:gap-10">
+    <div className="bg-surface/50 backdrop-blur-sm border-b border-white/8 mt-8 sm:mt-12 mb-12 sm:mb-16" role="complementary" aria-label="Quick info">
+      <div className="container py-5 sm:py-6 flex flex-wrap items-center justify-between gap-6">
+        <div className="flex flex-wrap gap-8 sm:gap-12">
           <div>
             <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">Status</div>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-available animate-pulse" aria-hidden="true" />
+            <div className="flex items-center gap-2 mt-1.5">
+              <span className="w-2 h-2 rounded-full bg-available animate-pulse shadow-[0_0_6px_#22C55E]" aria-hidden="true" />
               <span className="font-display font-bold text-sm text-available">Open Now</span>
             </div>
           </div>
           <div>
             <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">Today</div>
-            <div className="font-display font-medium text-sm text-text mt-1">10:00 AM – 2:00 AM</div>
+            <div className="font-display font-medium text-sm text-text mt-1.5">10:00 AM – 2:00 AM</div>
           </div>
           <div className="hidden sm:block">
             <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">Location</div>
-            <div className="font-display font-medium text-sm text-text mt-1">Koramangala, Bengaluru</div>
+            <div className="font-display font-medium text-sm text-text mt-1.5">Koramangala, Bengaluru</div>
           </div>
           <div>
             <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">PC Stations</div>
-            <div className="font-display font-bold text-sm text-lime mt-1">
+            <div className="font-display font-bold text-sm text-lime mt-1.5">
               {available} / {pcZone.stations.length} Free
             </div>
           </div>
@@ -240,74 +251,84 @@ function GamingZones() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32" aria-labelledby="zones-heading">
+    <section ref={sectionRef} className="mt-16 sm:mt-24 lg:mt-28 mb-16 sm:mb-24 lg:mb-28 py-24 sm:py-32 lg:py-36" aria-labelledby="zones-heading">
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <SectionHeading
             id="zones-heading"
             eyebrow="Gaming Zones"
             title="Choose Your Arena"
-            description="Every zone is purpose-built. From solo grinders to full team bootcamps."
+            description="Every zone is purpose-built. From solo competitive grinders to full 5-player esports bootcamps."
             className="sh-animate"
           />
           <Button to="/availability" variant="outline" size="sm" className="sh-animate flex-shrink-0 self-start md:self-auto">
-            View Availability
+            View Live Availability →
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
           {zones.map((zone) => {
             const available = zone.stations.filter((s) => s.status === 'available').length;
             return (
               <article
                 key={zone.id}
-                className="group bg-surface border border-white/8 rounded overflow-hidden hover:border-white/18 transition-all duration-300"
+                className="group bg-surface/90 border border-white/8 rounded-xl overflow-hidden hover:border-white/20 card-glow hover-lift transition-all duration-300 flex flex-col justify-between"
               >
-                {/* Image */}
-                <div className="relative overflow-hidden" style={{ height: '240px' }}>
+                {/* Image header */}
+                <div className="relative overflow-hidden h-60 sm:h-64 bg-bg2">
                   <img
                     src={zone.image}
                     alt={zone.name}
-                    className="w-full h-full object-cover opacity-75 group-hover:scale-[1.04] transition-transform duration-500"
+                    className="w-full h-full object-cover opacity-75 group-hover:scale-[1.03] transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
 
-                  {/* Badges top */}
-                  <div className="absolute top-4 right-4 flex gap-2">
+                  {/* Top corner status badges */}
+                  <div className="absolute top-5 right-5 flex gap-2">
                     {zone.badge && (
-                      <span className="bg-purple/20 text-purple font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-sm border border-purple/30">
+                      <span className="bg-purple/20 backdrop-blur-sm text-purple font-display text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full border border-purple/30">
                         {zone.badge}
                       </span>
                     )}
                     <span
-                      className={`font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-sm border ${
+                      className={`font-display text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full border backdrop-blur-sm ${
                         available > 0
-                          ? 'bg-available/10 text-available border-available/30'
-                          : 'bg-inuse/10 text-inuse border-inuse/30'
+                          ? 'bg-available/15 text-available border-available/30'
+                          : 'bg-inuse/15 text-inuse border-inuse/30'
                       }`}
                       aria-label={`${available} stations available`}
                     >
                       {available > 0 ? `${available} Free` : 'Full'}
                     </span>
                   </div>
-
-                  {/* Zone name bottom of image */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="font-display font-bold text-xl text-text leading-tight">{zone.name}</h3>
-                    <p className="text-muted text-sm mt-1 leading-snug line-clamp-2">{zone.description}</p>
-                  </div>
                 </div>
 
-                {/* Card footer */}
-                <div className="px-5 py-4 flex items-center justify-between">
+                {/* Spacious card body */}
+                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="font-display font-bold text-2xl text-lime">₹{zone.pricePerHour}</span>
-                    <span className="text-muted text-xs font-medium ml-1">/hr</span>
+                    <h3 className="font-display font-bold text-2xl text-text mb-2.5 group-hover:text-lime transition-colors">
+                      {zone.name}
+                    </h3>
+                    <p className="text-muted text-sm sm:text-base leading-relaxed mb-6">
+                      {zone.description}
+                    </p>
                   </div>
-                  <div className="flex gap-2">
-                    <Button to="/booking" size="sm">Book</Button>
-                    <Button to="/availability" variant="outline" size="sm">Availability</Button>
+
+                  {/* Spacious footer with price & clear CTAs */}
+                  <div className="pt-6 border-t border-white/8 flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                      <div className="text-[10px] font-display uppercase tracking-widest text-muted mb-0.5">Rate</div>
+                      <div className="flex items-baseline gap-1">
+                        <span className="font-display font-bold text-2xl sm:text-3xl text-lime stat-num">₹{zone.pricePerHour}</span>
+                        <span className="text-muted text-xs font-medium">/ hour</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Button to="/booking" size="md">
+                        Book Session
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </article>
@@ -352,40 +373,40 @@ function LiveAvailability() {
   return (
     <section
       ref={sectionRef}
-      className="bg-bg2 py-20 sm:py-28 border-y border-white/8"
+      className="bg-bg2 mt-4 mb-4 py-24 sm:py-32 lg:py-36 border-y border-white/8"
       aria-labelledby="avail-heading"
     >
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <SectionHeading
             id="avail-heading"
             eyebrow="Live Availability"
             title="PC Zone — Right Now"
-            description="Green means ready. Walk in or book ahead."
+            description="Green means ready. Real-time telemetry so you never wait for a seat."
             className="sh-animate"
           />
           <Button to="/availability" variant="outline" size="sm" className="sh-animate flex-shrink-0 self-start md:self-auto">
-            Full Availability →
+            Full Arena Status →
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-12">
           {preview.map((station) => (
             <div
               key={station.id}
-              className={`bg-surface border rounded p-6 sm:p-7 transition-all items-center justify-center ${
+              className={`bg-surface/80 backdrop-blur-sm border rounded-xl p-5 sm:p-6 transition-all hover-lift ${
                 station.status === 'available'
-                  ? 'border-available/20 hover:border-available/40'
-                  : 'border-white/8'
+                  ? 'border-available/30 hover:border-available/60 shadow-[0_0_12px_rgba(34,197,94,0.06)]'
+                  : 'border-white/8 opacity-85'
               }`}
               role="status"
               aria-label={`${station.name}: ${station.status}`}
             >
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="font-display font-bold text-sm text-text">{station.name}</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-display font-bold text-base text-text">{station.name}</span>
                 <span
-                  className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                    station.status === 'available' ? 'bg-available animate-pulse'
+                  className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
+                    station.status === 'available' ? 'bg-available animate-pulse shadow-[0_0_8px_#22C55E]'
                     : station.status === 'in-use'  ? 'bg-inuse'
                     : station.status === 'reserved' ? 'bg-reserved'
                     : 'bg-maintenance'
@@ -395,31 +416,31 @@ function LiveAvailability() {
               </div>
               <StatusBadge status={station.status} size="sm" />
               {station.reservedAt && (
-                <p className="text-reserved text-[10px] mt-2">Reserved: {station.reservedAt}</p>
+                <p className="text-reserved text-[10px] mt-2 font-medium">Reserved: {station.reservedAt}</p>
               )}
             </div>
           ))}
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap gap-5 text-xs">
+        <div className="flex flex-wrap gap-8 text-xs pt-6 border-t border-white/6">
           {[
             { status: 'available',   label: 'Available',    count: pcZone.stations.filter((s) => s.status === 'available').length },
             { status: 'in-use',      label: 'In Use',       count: pcZone.stations.filter((s) => s.status === 'in-use').length },
             { status: 'reserved',    label: 'Reserved',     count: pcZone.stations.filter((s) => s.status === 'reserved').length },
             { status: 'maintenance', label: 'Maintenance',  count: pcZone.stations.filter((s) => s.status === 'maintenance').length },
           ].map(({ status, label, count }) => (
-            <div key={status} className="flex items-center gap-1.5 text-muted font-display font-medium uppercase tracking-wide">
+            <div key={status} className="flex items-center gap-2 text-muted font-display font-medium uppercase tracking-wide">
               <span
-                className={`w-2 h-2 rounded-full ${
-                  status === 'available' ? 'bg-available'
+                className={`w-2.5 h-2.5 rounded-full ${
+                  status === 'available' ? 'bg-available shadow-[0_0_6px_#22C55E]'
                   : status === 'in-use'  ? 'bg-inuse'
                   : status === 'reserved' ? 'bg-reserved'
                   : 'bg-maintenance'
                 }`}
                 aria-hidden="true"
               />
-              {count} {label}
+              <span className="font-bold text-text">{count}</span> {label}
             </div>
           ))}
         </div>
@@ -458,28 +479,28 @@ function FeaturedGames() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32" aria-labelledby="games-heading">
+    <section ref={sectionRef} className="mt-16 sm:mt-24 lg:mt-28 mb-16 sm:mb-24 lg:mb-28 py-24 sm:py-32 lg:py-36" aria-labelledby="games-heading">
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <SectionHeading
             id="games-heading"
             eyebrow="Game Library"
             title="80+ Games Available"
-            description="Every genre. Every platform. From tactical shooters to open-world racers."
+            description="Every genre. Every platform. High tickrate servers, local low-ping cache, all ready to launch."
             className="sh-animate"
           />
           <Button to="/games" variant="outline" size="sm" className="sh-animate flex-shrink-0 self-start md:self-auto">
-            View All →
+            Browse All Games →
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {featured.map((game) => (
             <article
               key={game.id}
-              className="group bg-surface border border-white/8 rounded overflow-hidden hover:border-white/18 transition-all duration-200 hover:-translate-y-0.5"
+              className="group bg-surface/90 border border-white/8 rounded-xl overflow-hidden hover:border-white/22 card-glow hover-lift transition-all duration-300"
             >
-              <div className="relative overflow-hidden" style={{ height: '160px' }}>
+              <div className="relative overflow-hidden h-48 sm:h-52 bg-bg2">
                 <img
                   src={game.image}
                   alt={game.name}
@@ -487,17 +508,17 @@ function FeaturedGames() {
                   loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-bg/85 text-cyan font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-sm">
+                <div className="absolute top-4 left-4">
+                  <span className="bg-bg/85 backdrop-blur-xs text-cyan font-display text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border border-cyan/20">
                     {game.genre}
                   </span>
                 </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-display font-bold text-sm text-text mb-1 leading-tight">{game.name}</h3>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted text-xs">{game.platform.join(' · ')}</span>
-                  {game.rating && <span className="text-gold text-xs font-semibold">{game.rating}★</span>}
+              <div className="p-6">
+                <h3 className="font-display font-bold text-lg text-text mb-2 leading-tight group-hover:text-lime transition-colors">{game.name}</h3>
+                <div className="flex items-center justify-between pt-2 border-t border-white/6">
+                  <span className="text-muted text-xs font-medium">{game.platform.join(' · ')}</span>
+                  {game.rating && <span className="text-gold text-xs font-bold">★ {game.rating}</span>}
                 </div>
               </div>
             </article>
@@ -540,16 +561,16 @@ function UpcomingTournaments() {
   return (
     <section
       ref={sectionRef}
-      className="bg-bg2 py-20 sm:py-28 border-y border-white/8"
+      className="bg-bg2 mt-4 mb-4 py-24 sm:py-32 lg:py-36 border-y border-white/8"
       aria-labelledby="tournaments-heading"
     >
       <div className="container">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <SectionHeading
             id="tournaments-heading"
             eyebrow="Tournaments"
             title="Compete for Glory"
-            description="Join the circuit. Win real prize pools. Build your legacy."
+            description="Join the circuit. Real cash prize pools, live broadcast, and pro-grade refereeing."
             className="sh-animate"
           />
           <Button to="/tournaments" variant="outline" size="sm" className="sh-animate flex-shrink-0 self-start md:self-auto">
@@ -557,7 +578,7 @@ function UpcomingTournaments() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
           {upcoming.map((t) => {
             const slotsLeft = t.maxTeams - t.registeredTeams;
             const pct = (t.registeredTeams / t.maxTeams) * 100;
@@ -565,31 +586,31 @@ function UpcomingTournaments() {
             return (
               <article
                 key={t.id}
-                className="bg-surface border border-white/8 rounded overflow-hidden group hover:border-white/18 hover:-translate-y-0.5 transition-all duration-200"
+                className="bg-surface/90 border border-white/8 rounded-xl overflow-hidden group hover:border-white/22 card-glow hover-lift transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Image */}
-                <div className="relative overflow-hidden" style={{ height: '180px' }}>
+                <div className="relative overflow-hidden h-52 sm:h-60 bg-bg2">
                   <img
                     src={t.image}
                     alt={t.name}
-                    className="w-full h-full object-cover opacity-50 group-hover:scale-[1.03] transition-transform duration-500"
+                    className="w-full h-full object-cover opacity-60 group-hover:scale-[1.03] transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent" />
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="bg-bg/85 text-cyan font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-sm">
+                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
+                  <div className="absolute top-5 left-5 flex gap-2">
+                    <span className="bg-bg/85 backdrop-blur-xs text-cyan font-display text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full border border-cyan/20">
                       {t.game}
                     </span>
-                    <span className="bg-bg/85 text-muted font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-sm">
+                    <span className="bg-bg/85 backdrop-blur-xs text-muted font-display text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full border border-white/10">
                       {t.playersPerTeam === 1 ? 'Solo' : `${t.playersPerTeam}v${t.playersPerTeam}`}
                     </span>
                   </div>
-                  <div className="absolute top-4 right-4">
+                  <div className="absolute top-5 right-5">
                     <span
-                      className={`font-display text-[10px] font-semibold uppercase tracking-widest px-2 py-1 rounded-sm border ${
+                      className={`font-display text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full border backdrop-blur-xs ${
                         t.registrationStatus === 'open' && !isFull
-                          ? 'bg-available/10 text-available border-available/20'
-                          : 'bg-inuse/10 text-inuse border-inuse/20'
+                          ? 'bg-available/15 text-available border-available/30'
+                          : 'bg-inuse/15 text-inuse border-inuse/30'
                       }`}
                     >
                       {isFull ? 'Full' : t.registrationStatus === 'open' ? 'Open' : 'Closed'}
@@ -598,49 +619,51 @@ function UpcomingTournaments() {
                 </div>
 
                 {/* Card body */}
-                <div className="p-6">
-                  <h3 className="font-display font-bold text-xl text-text mb-4">{t.name}</h3>
+                <div className="p-7 sm:p-8 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-display font-bold text-2xl text-text mb-4 group-hover:text-lime transition-colors">{t.name}</h3>
 
-                  <div className="grid grid-cols-3 gap-3 mb-4">
-                    <div>
-                      <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-0.5">Date</div>
-                      <div className="text-sm text-text font-medium">
-                        {new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                    <div className="grid grid-cols-3 gap-4 mb-6 py-4 border-y border-white/8">
+                      <div>
+                        <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">Date</div>
+                        <div className="text-sm text-text font-medium">
+                          {new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">Prize</div>
+                        <div className="font-display font-bold text-base text-gold">₹{t.prizePool.toLocaleString('en-IN')}</div>
+                      </div>
+                      <div>
+                        <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-1">Entry</div>
+                        <div className="text-sm text-text font-medium">₹{t.entryFee}</div>
                       </div>
                     </div>
-                    <div>
-                      <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-0.5">Prize</div>
-                      <div className="font-display font-bold text-sm text-gold">₹{t.prizePool.toLocaleString('en-IN')}</div>
-                    </div>
-                    <div>
-                      <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-0.5">Entry</div>
-                      <div className="text-sm text-text font-medium">₹{t.entryFee}</div>
+
+                    {/* Capacity bar */}
+                    <div className="mb-6">
+                      <div className="flex justify-between text-[11px] text-muted font-display uppercase tracking-wide mb-2">
+                        <span>{t.registeredTeams}/{t.maxTeams} teams</span>
+                        <span className={slotsLeft <= 3 ? 'text-reserved font-bold' : 'text-muted'}>{slotsLeft} slots left</span>
+                      </div>
+                      <div className="h-1.5 bg-surface2 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${pct >= 90 ? 'bg-inuse' : pct >= 70 ? 'bg-reserved' : 'bg-lime'}`}
+                          style={{ width: `${pct}%` }}
+                          role="progressbar"
+                          aria-valuenow={t.registeredTeams}
+                          aria-valuemin={0}
+                          aria-valuemax={t.maxTeams}
+                          aria-label={`${t.registeredTeams} of ${t.maxTeams} teams registered`}
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Capacity bar */}
-                  <div className="mb-5">
-                    <div className="flex justify-between text-[10px] text-muted font-display uppercase tracking-wide mb-1.5">
-                      <span>{t.registeredTeams}/{t.maxTeams} teams</span>
-                      <span className={slotsLeft <= 3 ? 'text-reserved' : 'text-muted'}>{slotsLeft} left</span>
-                    </div>
-                    <div className="h-1 bg-surface2 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${pct >= 90 ? 'bg-inuse' : pct >= 70 ? 'bg-reserved' : 'bg-lime'}`}
-                        style={{ width: `${pct}%` }}
-                        role="progressbar"
-                        aria-valuenow={t.registeredTeams}
-                        aria-valuemin={0}
-                        aria-valuemax={t.maxTeams}
-                        aria-label={`${t.registeredTeams} of ${t.maxTeams} teams registered`}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <Button to={`/tournaments/${t.id}`} size="sm" variant="outline">View Details</Button>
+                  <div className="flex gap-4 pt-2">
+                    <Button to={`/tournaments/${t.id}`} size="md" variant="outline" className="flex-1">View Details</Button>
                     {t.registrationStatus === 'open' && !isFull && (
-                      <Button to={`/tournaments/${t.id}#register`} size="sm">Register Now</Button>
+                      <Button to={`/tournaments/${t.id}#register`} size="md" className="flex-1">Register Now</Button>
                     )}
                   </div>
                 </div>
@@ -683,7 +706,7 @@ function Champions() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-20 sm:py-28 lg:py-32" aria-labelledby="champions-heading">
+    <section ref={sectionRef} className="mt-16 sm:mt-24 lg:mt-28 mb-16 sm:mb-24 lg:mb-28 py-20 sm:py-28 lg:py-32" aria-labelledby="champions-heading">
       <div className="container">
         <div className="mb-12 text-center flex flex-col items-center sh-animate">
           <SectionHeading
@@ -753,7 +776,7 @@ function Location() {
   return (
     <section
       ref={sectionRef}
-      className="bg-bg2 py-20 sm:py-28 border-t border-white/8"
+      className="bg-bg2 mt-4 mb-4 py-20 sm:py-28 border-t border-white/8"
       aria-labelledby="location-heading"
     >
       <div className="container">
@@ -842,16 +865,16 @@ function FinalCTA() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-24 sm:py-32 border-t border-white/8">
-      <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+    <section ref={sectionRef} className="mt-16 sm:mt-24 lg:mt-28 mb-16 sm:mb-24 lg:mb-28 py-24 sm:py-32 border-t border-white/8 flex items-center justify-center text-center">
+      <div className="container flex justify-center">
+        <div className="w-full max-w-3xl mx-auto text-center" style={{ width: '100%', maxWidth: '48rem', marginInline: 'auto', textAlign: 'center' }}>
           <h2
             className="cta-animate font-display font-bold text-text mb-6"
             style={{ fontSize: 'clamp(36px, 5.5vw, 64px)', letterSpacing: '-0.025em', lineHeight: 1.05 }}
           >
             READY TO <span className="text-lime">PLAY?</span>
           </h2>
-          <p className="cta-animate text-muted text-base sm:text-lg mb-10 max-w-[42ch] mx-auto leading-relaxed">
+          <p className="cta-animate w-full max-w-[42ch] mx-auto text-center text-muted text-base sm:text-lg mb-10 leading-relaxed" style={{ width: '100%', maxWidth: '42ch', marginInline: 'auto', textAlign: 'center' }}>
             Book a station online in under 2 minutes. Walk in and start playing.
           </p>
           <div className="cta-animate flex flex-wrap gap-4 justify-center">
@@ -868,7 +891,7 @@ function FinalCTA() {
 
 export default function Home() {
   return (
-    <>
+    <div className="flex flex-col gap-12 sm:gap-16 lg:gap-20">
       <Hero />
       <Marquee />
       <StatusBar />
@@ -879,6 +902,6 @@ export default function Home() {
       <Champions />
       <Location />
       <FinalCTA />
-    </>
+    </div>
   );
 }

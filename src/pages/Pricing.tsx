@@ -43,10 +43,10 @@ export default function Pricing() {
   }, [activeZone]);
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Pricing and rates">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-label="Pricing and rates">
       {/* Header */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-12 sm:pt-20 sm:pb-16 px-5 sm:px-6">
-        <div className="max-w-7xl mx-auto pricing-header-anim">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+        <div className="container pricing-header-anim">
           <SectionHeading
             eyebrow="Pricing"
             title="Simple, Transparent Rates"
@@ -55,9 +55,9 @@ export default function Pricing() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="container pt-12 sm:pt-16">
         {/* Zone tabs rail */}
-        <div className="overflow-x-auto no-scrollbar pb-1 mb-8 sm:mb-10" role="tablist" aria-label="Select gaming zone for pricing details">
+        <div className="overflow-x-auto no-scrollbar pb-1 mb-12 sm:mb-14" role="tablist" aria-label="Select gaming zone for pricing details">
           <div className="flex gap-2.5 min-w-max">
             {zones.map((z) => (
               <button
@@ -66,15 +66,15 @@ export default function Pricing() {
                 aria-selected={activeZone === z.id}
                 aria-controls={`zone-panel-${z.id}`}
                 onClick={() => setActiveZone(z.id)}
-                className={`font-display text-[11px] font-semibold uppercase tracking-widest px-5 py-2.5 rounded transition-all min-h-[44px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                className={`inline-flex items-center gap-2.5 font-display text-[11px] font-semibold uppercase tracking-widest px-5 py-2.5 rounded-full transition-all min-h-[42px] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                   activeZone === z.id
-                    ? `${z.bg} ${z.accent} ${z.border} border shadow-sm`
-                    : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25'
+                    ? `${z.bg} ${z.accent} ${z.border} border shadow-md font-bold scale-[1.02]`
+                    : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25 hover:bg-white/5'
                 }`}
               >
-                {z.label}
+                <span>{z.label}</span>
                 {z.tag && (
-                  <span className="ml-2 text-[9px] px-1.5 py-0.5 rounded-sm bg-white/10 font-bold tracking-wider">
+                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/12 font-bold tracking-wider flex-shrink-0 text-text">
                     {z.tag}
                   </span>
                 )}
@@ -87,10 +87,10 @@ export default function Pricing() {
         <div id={`zone-panel-${zone.id}`} role="tabpanel" className="pricing-panel-anim grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10">
           {/* Pricing table */}
           <div className="lg:col-span-2">
-            <h2 className={`font-display font-bold text-2xl sm:text-3xl mb-6 ${zone.accent}`}>
+            <h2 className={`font-display font-bold text-2xl sm:text-3xl mb-7 ${zone.accent}`}>
               {zone.label}
             </h2>
-            <div className={`border rounded overflow-hidden ${zone.border} bg-surface`}>
+            <div className={`border rounded-xl overflow-hidden ${zone.border} bg-surface card-glow`}>
               <div className={`${zone.bg} px-6 py-4 flex items-center justify-between border-b border-white/8`}>
                 <span className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
                   Duration
@@ -115,7 +115,7 @@ export default function Pricing() {
                 ))}
               </div>
             </div>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-10 flex flex-wrap gap-4">
               <Button to="/booking" size="md">
                 Book {zone.label}
               </Button>
@@ -127,7 +127,7 @@ export default function Pricing() {
 
           {/* Features */}
           <div>
-            <h3 className="font-display font-bold text-base text-text mb-4">
+            <h3 className="font-display font-bold text-base text-text mb-5">
               Included with {zone.label}
             </h3>
             <ul className="flex flex-col gap-3" role="list">
@@ -145,7 +145,7 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
-            <div className="mt-8 bg-surface border border-white/8 rounded p-6 text-sm text-muted">
+            <div className="mt-10 bg-surface border border-white/8 rounded-xl p-6 sm:p-7 text-sm text-muted">
               <div className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted mb-3">
                 Venue Amenities
               </div>
@@ -168,7 +168,7 @@ export default function Pricing() {
         </div>
 
         {/* Full comparison */}
-        <div className="mt-20 border-t border-white/8 pt-16">
+        <div className="mt-24 mb-16 sm:mb-24 border-t border-white/8 pt-20">
           <SectionHeading eyebrow="Compare" title="All Zones at a Glance" align="center" />
 
           {/* Mobile View: Stacked Cards */}

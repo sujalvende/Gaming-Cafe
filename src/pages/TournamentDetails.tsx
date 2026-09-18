@@ -294,7 +294,7 @@ export default function TournamentDetails() {
   }
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-labelledby="tournament-heading">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-labelledby="tournament-heading">
       {/* Hero banner */}
       <div className="relative overflow-hidden bg-bg2 h-72 sm:h-80 border-b border-white/8">
         <img
@@ -303,8 +303,8 @@ export default function TournamentDetails() {
           className="w-full h-full object-cover opacity-35"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/65 to-transparent" />
-        <div className="absolute bottom-8 left-0 right-0 px-5 sm:px-6">
-          <div className="max-w-7xl mx-auto tourndetail-hero-anim">
+        <div className="absolute bottom-8 left-0 right-0">
+          <div className="container tourndetail-hero-anim">
             <div className="flex flex-wrap gap-2 mb-3">
               <span className="bg-bg/90 backdrop-blur-xs text-cyan font-display text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-sm border border-cyan/20">
                 {tournament.game}
@@ -329,7 +329,7 @@ export default function TournamentDetails() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-10 sm:mt-12">
+      <div className="container pt-12 sm:pt-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Main content */}
           <div className="lg:col-span-2 flex flex-col gap-8 sm:gap-10">

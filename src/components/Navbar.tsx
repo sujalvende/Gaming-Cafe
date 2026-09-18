@@ -33,51 +33,64 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-bg/95 backdrop-blur-md border-b border-white/8' : 'bg-transparent'
+          scrolled
+            ? 'bg-bg/92 backdrop-blur-xl border-b border-white/6'
+            : 'bg-transparent'
         }`}
         style={{ height: 'var(--navbar-h)' }}
       >
-        <div className="container h-full flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            to="/"
-            className="flex items-center gap-2.5 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
-            aria-label="Nexus Gaming Cafe – Home"
-          >
-            <span className="w-7 h-7 bg-lime rounded-sm flex items-center justify-center flex-shrink-0">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-bg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M6 9h2v2H6V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9zM3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2v10h16V7H4z" />
-              </svg>
-            </span>
-            <span className="font-display font-bold text-lg tracking-tight text-text">NEXUS</span>
-          </Link>
+        {/* Premium lime gradient line — only when scrolled */}
+        {scrolled && (
+          <div className="absolute bottom-0 left-0 right-0 gradient-line opacity-60" aria-hidden="true" />
+        )}
+        <div className="container h-full flex items-center justify-between gap-6">
+          {/* Left: Logo + Desktop Nav */}
+          <div className="flex items-center gap-10 lg:gap-14">
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
+              aria-label="Nexus Gaming Cafe – Home"
+            >
+              <span className="w-7 h-7 bg-lime rounded-sm flex items-center justify-center flex-shrink-0">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-bg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M6 9h2v2H6V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9zM3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2v10h16V7H4z" />
+                </svg>
+              </span>
+              <span className="font-display font-bold text-lg tracking-tight text-text">NEXUS</span>
+            </Link>
 
-          {/* Desktop Nav — increased link padding and gap for breathing room */}
-          <nav className="hidden md:flex items-center gap-3 flex-1" aria-label="Main navigation">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                style={{ marginLeft: l.to === '/' ? '2rem' : undefined }}
-                className={({ isActive }) =>
-                  `font-display font-medium text-[11px] uppercase tracking-widest px-4 py-2.5 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
-                    isActive ? 'text-lime' : 'text-muted hover:text-text'
-                  }`
-                }
-              >
-                {l.label}
-              </NavLink>
-            ))}
-          </nav>
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center gap-2 lg:gap-3" aria-label="Main navigation">
+              {links.map((l) => (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.to === '/'}
+                  className={({ isActive }) =>
+                    `font-display text-[11px] uppercase tracking-wider px-3.5 py-2 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                      isActive
+                        ? 'bg-lime/12 text-lime border border-lime/25 font-semibold shadow-[0_0_12px_rgba(183,255,60,0.15)]'
+                        : 'text-muted hover:text-text hover:bg-white/5 border border-transparent'
+                    }`
+                  }
+                >
+                  {l.label}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
 
-          {/* CTA + Hamburger — clear gap from nav links */}
-          <div className="flex items-center gap-3 flex-shrink-0 ml-6">
+          {/* Right: CTA + Hamburger */}
+          <div className="flex items-center gap-4 flex-shrink-0">
             <Link
               to="/booking"
-              className="hidden sm:inline-flex items-center gap-2 bg-lime text-bg font-display font-bold text-[11px] uppercase tracking-widest px-6 py-2.5 rounded hover:bg-lime-dim transition-all active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50"
+              className="hidden sm:inline-flex items-center gap-2 bg-lime text-bg font-display font-bold text-[11px] uppercase tracking-widest px-5 py-2.5 rounded hover:bg-lime-dim transition-all active:scale-[0.97] shadow-[0_0_16px_rgba(183,255,60,0.2)] hover:shadow-[0_0_24px_rgba(183,255,60,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50"
             >
-              Book Now
+              <span>Book Now</span>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
             </Link>
             <button
               className="md:hidden flex flex-col justify-center gap-[5px] p-2 min-h-[44px] min-w-[44px] rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50"

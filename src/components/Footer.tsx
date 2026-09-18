@@ -17,24 +17,26 @@ const hours = [
   { day: 'Sunday', time: '9:00 AM – 1:00 AM' },
 ];
 
-export default function Footer() {
+export default function Footer({ className = '' }: { className?: string }) {
   return (
-    <footer className="bg-bg2 border-t border-white/8 mt-auto">
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className={`bg-bg2 border-t border-white/8 mt-auto ${className}`}>
+      {/* Premium accent line */}
+      <div className="gradient-line" aria-hidden="true" />
+      <div className="container py-16 sm:py-20 lg:py-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-14">
         {/* Brand */}
-        <div className="flex flex-col gap-4 sm:col-span-2 lg:col-span-1">
+        <div className="flex flex-col gap-5 sm:col-span-2 lg:col-span-1">
           <Link to="/" className="flex items-center gap-2.5 w-fit" aria-label="Nexus Gaming Cafe – Home">
-            <span className="w-7 h-7 bg-lime rounded-sm flex items-center justify-center flex-shrink-0">
+            <span className="w-8 h-8 bg-lime rounded-sm flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(183,255,60,0.3)]">
               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-bg" aria-hidden="true">
                 <path d="M6 9h2v2H6V9zm4 0h2v2h-2V9zm4 0h2v2h-2V9zM3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2v10h16V7H4z" />
               </svg>
             </span>
-            <span className="font-display font-bold text-lg text-text">NEXUS</span>
+            <span className="font-display font-bold text-xl tracking-tight text-text">NEXUS</span>
           </Link>
           <p className="text-muted text-sm leading-relaxed max-w-[32ch]">
-            Bengaluru's premium gaming lounge and esports venue. Where competition meets comfort.
+            Bengaluru's premier gaming lounge and esports venue. Where competition meets comfort.
           </p>
-          <div className="flex gap-4 mt-1">
+          <div className="flex gap-4 mt-2">
             {[
               { label: 'Instagram', href: '#' },
               { label: 'Twitter', href: '#' },
@@ -43,7 +45,7 @@ export default function Footer() {
               <a
                 key={s.label}
                 href={s.href}
-                className="text-muted hover:text-text text-xs font-display font-medium uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
+                className="text-muted hover:text-lime text-xs font-display font-medium uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
                 aria-label={`Nexus on ${s.label}`}
               >
                 {s.label}
@@ -54,15 +56,15 @@ export default function Footer() {
 
         {/* Navigation */}
         <div>
-          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-4">
+          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-5">
             Explore
           </h4>
-          <ul className="flex flex-col gap-2" role="list">
+          <ul className="flex flex-col gap-3" role="list">
             {navLinks.map((l) => (
               <li key={l.to}>
                 <Link
                   to={l.to}
-                  className="text-sm text-muted hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
+                  className="text-sm text-muted hover:text-text hover:translate-x-1 inline-block transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
                 >
                   {l.label}
                 </Link>
@@ -73,16 +75,16 @@ export default function Footer() {
 
         {/* Hours */}
         <div>
-          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-4">
+          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-5">
             Opening Hours
           </h4>
-          <ul className="flex flex-col gap-3" role="list">
+          <ul className="flex flex-col gap-4" role="list">
             {hours.map((h) => (
-              <li key={h.day} className="flex flex-col gap-0.5">
+              <li key={h.day} className="flex flex-col gap-1">
                 <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted">
                   {h.day}
                 </span>
-                <span className="text-sm text-text">{h.time}</span>
+                <span className="text-sm text-text font-medium">{h.time}</span>
               </li>
             ))}
           </ul>
@@ -90,38 +92,38 @@ export default function Footer() {
 
         {/* Contact */}
         <div>
-          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-4">
+          <h4 className="font-display text-[11px] font-semibold uppercase tracking-widest text-muted mb-5">
             Find Us
           </h4>
-          <address className="not-italic flex flex-col gap-3 text-sm">
+          <address className="not-italic flex flex-col gap-4 text-sm">
             <div>
-              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-0.5">
+              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-1">
                 Address
               </span>
-              <span className="text-text leading-snug">
+              <span className="text-text leading-relaxed">
                 12 Arena Street, Koramangala
                 <br />
                 Bengaluru, Karnataka 560034
               </span>
             </div>
             <div>
-              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-0.5">
+              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-1">
                 Phone
               </span>
               <a
                 href="tel:+918001234567"
-                className="text-text hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
+                className="text-text hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded font-medium"
               >
                 +91 80 0123 4567
               </a>
             </div>
             <div>
-              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-0.5">
+              <span className="text-[11px] font-display font-medium uppercase tracking-wide text-muted block mb-1">
                 Email
               </span>
               <a
                 href="mailto:play@nexusgaming.in"
-                className="text-text hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded"
+                className="text-text hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded font-medium"
               >
                 play@nexusgaming.in
               </a>
@@ -131,9 +133,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/8">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="container py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted">© 2026 Nexus Gaming Cafe. All rights reserved.</p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-6">
             {['Privacy Policy', 'Terms of Service'].map((t) => (
               <a
                 key={t}
@@ -145,9 +147,9 @@ export default function Footer() {
             ))}
             <Link
               to="/admin"
-              className="text-xs text-muted/60 hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded flex items-center gap-1"
+              className="text-xs text-muted/60 hover:text-lime transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 rounded flex items-center gap-1.5"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-lime/50" aria-hidden="true" />
+              <span className="w-1.5 h-1.5 rounded-full bg-lime/60" aria-hidden="true" />
               Admin
             </Link>
           </div>

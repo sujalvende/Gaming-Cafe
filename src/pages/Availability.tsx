@@ -56,59 +56,71 @@ export default function Availability() {
   }, [activeZone, statusFilter]);
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Live Station Availability">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-label="Live Station Availability">
       {/* Header */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-12 sm:pt-20 sm:pb-16 px-5 sm:px-6">
-        <div className="max-w-7xl mx-auto avail-header-anim">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+        <div className="container avail-header-anim">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 sm:gap-10">
             <SectionHeading
               eyebrow="Live Availability"
               title="Station Status"
               description="See what's free before you walk in. Updated in real-time."
             />
-            <div className="flex flex-col gap-1 md:text-right bg-surface/50 border border-white/10 rounded px-5 py-3 w-fit md:self-end">
-              <span className="font-display font-bold text-3xl sm:text-4xl text-lime" aria-live="polite">
-                {totalAvailable}/{totalStations}
-              </span>
-              <span className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
-                Stations Available
-              </span>
+            <div className="flex items-center gap-5 bg-surface/60 border border-white/10 rounded-xl px-6 py-5 w-fit md:self-end backdrop-blur-sm card-glow">
+              <div className="w-3 h-3 rounded-full bg-available animate-pulse shadow-[0_0_12px_#22C55E]" aria-hidden="true" />
+              <div className="flex flex-col">
+                <span className="font-display font-bold text-3xl sm:text-4xl text-lime stat-num tracking-tight" aria-live="polite">
+                  {totalAvailable}<span className="text-muted/60 text-2xl font-normal">/{totalStations}</span>
+                </span>
+                <span className="font-display text-[10px] font-semibold uppercase tracking-widest text-muted">
+                  Stations Available Now
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="container pt-12 sm:pt-16">
         {/* Filters */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-8">
           {/* Zone filters rail */}
           <div className="overflow-x-auto no-scrollbar pb-1" role="group" aria-label="Filter by gaming zone">
             <div className="flex gap-2 min-w-max">
               <button
                 onClick={() => setActiveZone('all')}
                 aria-pressed={activeZone === 'all'}
-                className={`font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                className={`inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded-full transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                   activeZone === 'all'
-                    ? 'bg-lime text-bg shadow-sm'
+                    ? 'bg-lime text-bg font-bold shadow-[0_0_16px_rgba(183,255,60,0.25)]'
                     : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25'
                 }`}
               >
-                All Zones
+                <span>All Zones</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${activeZone === 'all' ? 'bg-bg/20 text-bg' : 'bg-white/10 text-muted'}`}>
+                  {zones.length}
+                </span>
               </button>
-              {zones.map((z) => (
-                <button
-                  key={z.id}
-                  onClick={() => setActiveZone(z.id)}
-                  aria-pressed={activeZone === z.id}
-                  className={`font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
-                    activeZone === z.id
-                      ? 'bg-lime text-bg shadow-sm'
-                      : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25'
-                  }`}
-                >
-                  {z.name}
-                </button>
-              ))}
+              {zones.map((z) => {
+                const freeCount = z.stations.filter((s) => s.status === 'available').length;
+                return (
+                  <button
+                    key={z.id}
+                    onClick={() => setActiveZone(z.id)}
+                    aria-pressed={activeZone === z.id}
+                    className={`inline-flex items-center gap-2 font-display text-[11px] font-semibold uppercase tracking-widest px-4 py-2.5 rounded-full transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
+                      activeZone === z.id
+                        ? 'bg-lime text-bg font-bold shadow-[0_0_16px_rgba(183,255,60,0.25)]'
+                        : 'bg-surface border border-white/10 text-muted hover:text-text hover:border-white/25'
+                    }`}
+                  >
+                    <span>{z.name}</span>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${activeZone === z.id ? 'bg-bg/20 text-bg' : 'bg-white/10 text-muted'}`}>
+                      {freeCount}/{z.stations.length}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -132,7 +144,7 @@ export default function Availability() {
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-5 sm:gap-7 mb-10 py-3.5 px-4 bg-surface/40 border border-white/5 rounded">
+        <div className="flex flex-wrap items-center gap-5 sm:gap-7 mb-12 py-4 px-5 bg-surface/40 border border-white/5 rounded-xl">
           {[
             { status: 'available', label: 'Available', bg: 'bg-available' },
             { status: 'in-use', label: 'In Use', bg: 'bg-inuse' },
@@ -149,13 +161,13 @@ export default function Availability() {
         </div>
 
         {/* Zone sections */}
-        <div className="flex flex-col gap-12 sm:gap-16">
+        <div className="flex flex-col gap-16 sm:gap-20">
           {visibleZones.map((zone) => {
             const filtered = zone.stations.filter((s) => filterStation(s.status));
             const avail = zone.stations.filter((s) => s.status === 'available').length;
             return (
               <section key={zone.id} className="avail-zone-section" aria-labelledby={`zone-heading-${zone.id}`}>
-                <div className="flex items-center justify-between mb-8 pb-3 border-b border-white/8">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/8">
                   <div className="flex items-center gap-3 sm:gap-4">
                     <h2 id={`zone-heading-${zone.id}`} className="font-display font-bold text-xl sm:text-2xl text-text">
                       {zone.name}
@@ -189,14 +201,14 @@ export default function Availability() {
                     <p className="text-muted text-sm">No stations match the selected filter in this zone.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 mb-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-5 mb-4">
                     {filtered.map((station) => (
                       <article
                         key={station.id}
-                        className={`bg-surface border rounded ${zone.id === 'pc' ? 'p-6 sm:p-7' : 'p-4 sm:p-5'} transition-all duration-200 flex flex-col justify-between ${
+                        className={`bg-surface border rounded-xl p-5 sm:p-6 transition-all duration-200 flex flex-col justify-between hover-lift ${
                           station.status === 'available'
-                            ? 'border-available/25 hover:border-available/50 hover:bg-surface2/80 shadow-xs'
-                            : 'border-white/8 opacity-85'
+                            ? 'border-available/30 hover:border-available/60 hover:bg-surface2/90 shadow-[0_0_12px_rgba(34,197,94,0.08)]'
+                            : 'border-white/8 opacity-85 hover:border-white/20'
                         }`}
                       >
                         <div>
@@ -205,9 +217,9 @@ export default function Availability() {
                               {station.name}
                             </span>
                             <span
-                              className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                              className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
                                 station.status === 'available'
-                                  ? 'bg-available animate-pulse'
+                                  ? 'bg-available animate-pulse shadow-[0_0_8px_#22C55E]'
                                   : station.status === 'in-use'
                                   ? 'bg-inuse'
                                   : station.status === 'reserved'
@@ -233,7 +245,7 @@ export default function Availability() {
                           <Button
                             to="/booking"
                             size="sm"
-                            className="mt-4 !text-[10px] !py-2 !px-2 w-full"
+                            className="mt-4 !text-[10px] !py-2 !px-2 w-full shadow-xs"
                           >
                             Book Station
                           </Button>

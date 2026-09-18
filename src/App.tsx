@@ -36,7 +36,7 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-bg flex flex-col">
       <Navbar />
       <main className={`${isHomePage ? '' : 'page-shell'} flex-1`}>{children}</main>
-      <Footer />
+      <Footer className={isHomePage ? '!mt-16 mb-8' : ''} />
     </div>
   );
 }

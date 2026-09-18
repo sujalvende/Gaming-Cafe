@@ -58,10 +58,10 @@ export default function Gallery() {
   }, [activeCategory]);
 
   return (
-    <div ref={rootRef} className="pb-24 min-h-screen" aria-label="Nexus Gaming Gallery">
+    <div ref={rootRef} className="pb-24 sm:pb-32" aria-label="Nexus Gaming Gallery">
       {/* Header */}
-      <div className="bg-bg2 border-b border-white/8 pt-16 pb-12 sm:pt-20 sm:pb-16 px-5 sm:px-6">
-        <div className="max-w-7xl mx-auto gallery-header-anim">
+      <div className="bg-bg2 border-b border-white/8 pt-20 pb-16 sm:pt-28 sm:pb-24">
+        <div className="container gallery-header-anim">
           <SectionHeading
             eyebrow="Gallery"
             title="Life at Nexus"
@@ -70,9 +70,9 @@ export default function Gallery() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 mt-8 sm:mt-10">
+      <div className="container pt-12 sm:pt-16">
         {/* Category filter rail */}
-        <div className="overflow-x-auto no-scrollbar pb-1 mb-8 sm:mb-10" role="group" aria-label="Filter gallery by category">
+        <div className="overflow-x-auto no-scrollbar pb-1 mb-12 sm:mb-14" role="group" aria-label="Filter gallery by category">
           <div className="flex gap-2 min-w-max">
             {categories.map(c => (
               <button
@@ -92,12 +92,12 @@ export default function Gallery() {
         </div>
 
         {/* Gallery grid */}
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
           {filtered.map(img => (
             <button
               key={img.id}
               onClick={() => setLightbox(img.src)}
-              className="group block bg-surface border border-white/8 rounded overflow-hidden hover:border-white/25 transition-all cursor-zoom-in text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50"
+              className="group block bg-surface border border-white/8 rounded-xl overflow-hidden hover:border-white/25 transition-all cursor-zoom-in text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50"
             >
               <div className="relative overflow-hidden aspect-[16/11]">
                 <img

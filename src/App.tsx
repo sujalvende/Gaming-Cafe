@@ -29,10 +29,13 @@ function ScrollToTop() {
  * they simply provide their own internal section spacing.
  */
 function PublicLayout({ children }: { children: React.ReactNode }) {
+  const { pathname } = useLocation();
+  const isHomePage = pathname === '/';
+
   return (
     <div className="min-h-screen bg-bg flex flex-col">
       <Navbar />
-      <main className="page-shell flex-1">{children}</main>
+      <main className={`${isHomePage ? '' : 'page-shell'} flex-1`}>{children}</main>
       <Footer />
     </div>
   );

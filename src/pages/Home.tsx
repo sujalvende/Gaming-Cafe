@@ -373,7 +373,7 @@ function LiveAvailability() {
           {preview.map((station) => (
             <div
               key={station.id}
-              className={`bg-surface border rounded p-4 transition-all ${
+              className={`bg-surface border rounded p-6 sm:p-7 transition-all items-center justify-center ${
                 station.status === 'available'
                   ? 'border-available/20 hover:border-available/40'
                   : 'border-white/8'

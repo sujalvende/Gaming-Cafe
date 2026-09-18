@@ -155,7 +155,7 @@ export default function Availability() {
             const avail = zone.stations.filter((s) => s.status === 'available').length;
             return (
               <section key={zone.id} className="avail-zone-section" aria-labelledby={`zone-heading-${zone.id}`}>
-                <div className="flex items-center justify-between mb-5 pb-3 border-b border-white/8">
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-white/8">
                   <div className="flex items-center gap-3 sm:gap-4">
                     <h2 id={`zone-heading-${zone.id}`} className="font-display font-bold text-xl sm:text-2xl text-text">
                       {zone.name}
@@ -189,11 +189,11 @@ export default function Availability() {
                     <p className="text-muted text-sm">No stations match the selected filter in this zone.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 mb-4">
                     {filtered.map((station) => (
                       <article
                         key={station.id}
-                        className={`bg-surface border rounded p-4 sm:p-5 transition-all duration-200 flex flex-col justify-between ${
+                        className={`bg-surface border rounded ${zone.id === 'pc' ? 'p-6 sm:p-7' : 'p-4 sm:p-5'} transition-all duration-200 flex flex-col justify-between ${
                           station.status === 'available'
                             ? 'border-available/25 hover:border-available/50 hover:bg-surface2/80 shadow-xs'
                             : 'border-white/8 opacity-85'

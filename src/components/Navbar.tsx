@@ -53,12 +53,13 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav — increased link padding and gap for breathing room */}
-          <nav className="hidden md:flex items-center gap-1 flex-1 ml-8" aria-label="Main navigation">
+          <nav className="hidden md:flex items-center gap-3 flex-1" aria-label="Main navigation">
             {links.map((l) => (
               <NavLink
                 key={l.to}
                 to={l.to}
                 end={l.to === '/'}
+                style={{ marginLeft: l.to === '/' ? '2rem' : undefined }}
                 className={({ isActive }) =>
                   `font-display font-medium text-[11px] uppercase tracking-widest px-4 py-2.5 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/50 ${
                     isActive ? 'text-lime' : 'text-muted hover:text-text'
